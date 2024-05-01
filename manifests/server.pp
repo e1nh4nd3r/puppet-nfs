@@ -26,7 +26,7 @@ class nfs::server (
   $nfs_v4_root_export_options   = $nfs::nfs_v4_root_export_options,
   $nfs_v4_root_export_bindmount = $nfs::nfs_v4_root_export_bindmount,
   $nfs_v4_root_export_tag       = $nfs::nfs_v4_root_export_tag,
-){
+) {
   # TODO: 'anchor' may be an outdated/incorrect means of handling resource ordering, look into changing this to 'contain' with Class calls?
   #   Related: https://blog.mayflower.de/4573-The-Puppet-Anchor-Pattern-in-Practice.html
   anchor { 'nfs::server::begin': }
