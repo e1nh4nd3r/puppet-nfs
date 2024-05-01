@@ -14,7 +14,7 @@
 # * Daniel Klockenkaemper <mailto:dk@marketing-factory.de>
 #
 class nfs::server::config {
-
+  # TODO: Get a better understanding of what 'concat' does in Puppet.
   concat { $nfs::exports_file:
     ensure  => present,
   }

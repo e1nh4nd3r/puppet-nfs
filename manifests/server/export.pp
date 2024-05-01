@@ -99,8 +99,8 @@ define nfs::server::export (
   if $nfs::server::nfs_v4 {
     if $nfsv4_bindmount_enable {
       $export_name = $v4_export_name
-      $export_title = "${::nfs::server::nfs_v4_export_root}/${export_name}"
-      $create_export_require = [ Nfs::Functions::Nfsv4_bindmount[$name] ]
+      $export_title = "${nfs::server::nfs_v4_export_root}/${export_name}"
+      $create_export_require = [Nfs::Functions::Nfsv4_bindmount[$name]]
 
       nfs::functions::nfsv4_bindmount { $name:
         ensure         => $ensure,

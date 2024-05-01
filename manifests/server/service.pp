@@ -55,6 +55,5 @@ class nfs::server::service {
         subscribe  => Concat[$nfs::exports_file],
       }
     }
-
   }
 }
