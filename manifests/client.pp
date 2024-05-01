@@ -14,16 +14,16 @@
 #
 # * Daniel Klockenkaemper <mailto:dk@marketing-factory.de>
 #
-
 class nfs::client (
-  $ensure                     = $::nfs::ensure,
-  $nfs_v4                     = $::nfs::nfs_v4_client,
-  $nfs_v4_mount_root          = $::nfs::nfs_v4_mount_root,
-  $nfs_v4_idmap_domain        = $::nfs::nfs_v4_idmap_domain,
+  String $ensure              = $nfs::ensure,
+  String $nfs_v4              = $nfs::nfs_v4_client,
+  String $nfs_v4_mount_root   = $nfs::nfs_v4_mount_root,
+  String $nfs_v4_idmap_domain = $nfs::nfs_v4_idmap_domain,
 ) {
-
-  anchor {'nfs::client::begin': }
-  anchor {'nfs::client::end': }
+  # TODO: 'anchor' may be an outdated/incorrect means of handling resource ordering, look into changing this to 'contain' with Class calls?
+  #   Related: https://blog.mayflower.de/4573-The-Puppet-Anchor-Pattern-in-Practice.html
+  anchor { 'nfs::client::begin': }
+  anchor { 'nfs::client::end': }
 
   # package(s)
   class { 'nfs::client::package': }

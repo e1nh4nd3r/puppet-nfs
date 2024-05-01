@@ -1,55 +1,54 @@
-# == Function: nfs::client::mount
+# Function: nfs::client::mount
+# TODO: Figure out how to make this match the defined resource type name below and make pdk less sad.
+# TODO: Add datatypes to class parameter documentation
+# TODO: Add examples to class parameter documentation
+# TODO: Move Examples in this file to README.md under Usage (or something)
 #
-# This Function exists to
-#  1. manage all mounts on a nfs client
+# This defined type exists to manage all mounts on a nfs client
 #
-# === Parameters
+# @param server
+#   Sets the ip address of the server with the nfs export
 #
-# [*server*]
-#   String. Sets the ip address of the server with the nfs export
+# @param share
+#   Sets the name of the nfs share on the server
 #
-# [*share*]
-#   String. Sets the name of the nfs share on the server
+# @param ensure
+#   Sets the ensure parameter of the mount
 #
-# [*ensure*]
-#   String. Sets the ensure parameter of the mount.
+# @param remounts
+#   Sets the remounts parameter of the mount
 #
-# [*remounts*]
-#   String. Sets the remounts parameter of the mount.
+# @param atboot
+#   Sets the atboot parameter of the mount.
 #
-# [*atboot*]
-#   String. Sets the atboot parameter of the mount.
+# @param options_nfsv4
+#   Sets the mount options for a nfs version 4 mount.
 #
-# [*options_nfsv4*]
-#   String. Sets the mount options for a nfs version 4 mount.
+# @param options_nfs
+#   Sets the mount options for a nfs mount.
 #
-# [*options_nfs*]
-#   String. Sets the mount options for a nfs mount.
-#
-# [*bindmount*]
-#   String. When not undef it will create a bindmount on the node
+# @param bindmount
+#   When not 'undef' it will create a bindmount on the node
 #   for the nfs mount.
 #
-# [*nfstag*]
-#   String. Sets the nfstag parameter of the mount.
+# @param nfstag
+#   Sets the nfstag parameter of the mount.
 #
-# [*nfs_v4*]
+# @param nfs_v4
 #   Boolean. When set to true, it uses nfs version 4 to mount a share.
 #
-# [*owner*]
-#   String. Set owner of mount dir
+# @param owner
+#   Set owner of mount dir
 #
-# [*group*]
-#   String. Set group of mount dir
+# @param group
+#   Set group of mount dir
 #
-# [*mode*]
-#   String. Set mode of mount dir
+# @param mode
+#   Set mode of mount dir
 #
-# [*mount_root*]
-#   String. Overwrite mount root if differs from server config
+# @param mount_root
+#   Overwrite mount root if differs from server config
 #
-
-
 # === Examples
 #
 # class { '::nfs':
@@ -69,35 +68,32 @@
 #
 # * Daniel Klockenkaemper <mailto:dk@marketing-factory.de>
 #
-
 define nfs::client::mount (
-  $server,
-  $share           = undef,
-  $ensure          = 'mounted',
-  $mount           = $title,
-  $remounts        = false,
-  $atboot          = false,
-  $options_nfsv4   = $::nfs::client_nfsv4_options,
-  $options_nfs     = $::nfs::client_nfs_options,
-  $bindmount       = undef,
-  $nfstag          = undef,
-  $nfs_v4          = $::nfs::client::nfs_v4,
-  $owner           = undef,
-  $group           = undef,
-  $mode            = undef,
-  $mount_root      = undef,
-  $manage_packages = $::nfs::manage_packages,
-  $client_packages = $::nfs::effective_client_packages,
+  String $server,
+  String $share           = undef,
+  String $ensure          = 'mounted',
+  String $mount           = $title,
+  Boolean $remounts       = false,
+  Boolean $atboot         = false,
+  String $options_nfsv4   = $nfs::client_nfsv4_options,
+  String $options_nfs     = $nfs::client_nfs_options,
+  String $bindmount       = undef,
+  String $nfstag          = undef,
+  String $nfs_v4          = $nfs::client::nfs_v4,
+  String $owner           = undef,
+  String $group           = undef,
+  String $mode            = undef,
+  String $mount_root      = undef,
+  String $manage_packages = $nfs::manage_packages,
+  String $client_packages = $nfs::effective_client_packages,
 ) {
-
   if $manage_packages and $client_packages != undef {
-    $mount_require = [ Nfs::Functions::Mkdir[$mount], Package[$client_packages] ]
+    $mount_require = [Nfs::Functions::Mkdir[$mount], Package[$client_packages]]
   } else {
-    $mount_require = [ Nfs::Functions::Mkdir[$mount] ]
+    $mount_require = [Nfs::Functions::Mkdir[$mount]]
   }
 
   if $nfs_v4 == true {
-
     if $mount_root == undef {
       $root = ''
     } else {
@@ -117,7 +113,7 @@ define nfs::client::mount (
     mount { "shared ${sharename} by ${server} on ${mount}":
       ensure   => $ensure,
       device   => "${server}:${sharename}",
-      fstype   => $::nfs::client_nfsv4_fstype,
+      fstype   => $nfs::client_nfsv4_fstype,
       name     => $mount,
       options  => $options_nfsv4,
       remounts => $remounts,
@@ -131,9 +127,7 @@ define nfs::client::mount (
         mount_name => $bindmount,
       }
     }
-
   } else {
-
     if $share != undef {
       $sharename = $share
     } else {
@@ -146,7 +140,7 @@ define nfs::client::mount (
     mount { "shared ${sharename} by ${server} on ${mount}":
       ensure   => $ensure,
       device   => "${server}:${sharename}",
-      fstype   => $::nfs::client_nfs_fstype,
+      fstype   => $nfs::client_nfs_fstype,
       name     => $mount,
       options  => $options_nfs,
       remounts => $remounts,

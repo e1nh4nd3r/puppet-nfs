@@ -27,17 +27,18 @@
 #
 # * Daniel Klockenkaemper <mailto:dk@marketing-factory.de>
 #
-
 define nfs::functions::nfsv4_bindmount (
-  $v4_export_name,
-  $bind,
-  $ensure = 'mounted',
+  String $v4_export_name,
+  String $bind,
+  String $ensure = 'mounted',
 ) {
   $normalize_export_root = regsubst($nfs::server::nfs_v4_export_root, '/$', '')
   $expdir = "${normalize_export_root}/${v4_export_name}"
+
   nfs::functions::mkdir { $expdir:
     ensure => $ensure,
   }
+
   mount { $expdir:
     ensure  => $ensure,
     device  => $name,

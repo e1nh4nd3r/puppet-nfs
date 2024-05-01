@@ -1,4 +1,4 @@
-# == Function: nfs::functions::create_export
+# Function: nfs::functions::create_export
 #
 # This Function exists to
 #  1. manage export creation
@@ -33,7 +33,6 @@
 #
 # * Daniel Klockenkaemper <mailto:dk@marketing-factory.de>
 #
-
 define nfs::functions::create_export (
   $clients,
   $ensure = 'present',

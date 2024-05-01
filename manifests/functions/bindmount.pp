@@ -1,7 +1,6 @@
-# == Function: nfs::functions::bindmount
+# Function: nfs::functions::bindmount
 #
-# This Function exists to
-#  1. manage bindmounts
+# This Function exists to manage bindmounts
 #
 # === Parameters
 #
@@ -24,14 +23,14 @@
 #
 # * Daniel Klockenkaemper <mailto:dk@marketing-factory.de>
 #
-
 define nfs::functions::bindmount (
-  $mount_name = undef,
-  $ensure     = 'present',
+  String $mount_name = undef,
+  String $ensure     = 'present',
 ) {
   nfs::functions::mkdir { $mount_name:
     ensure => $ensure,
   }
+
   mount { $mount_name:
     ensure  => $ensure,
     device  => $name,
