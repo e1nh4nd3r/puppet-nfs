@@ -9,37 +9,37 @@ describe 'nfs class' do
     case fact('lsbdistcodename')
     when 'jessie', 'wheezy'
       server_service = 'nfs-kernel-server'
-      server_servicehelpers = %w[nfs-common]
-      client_services = %w[rpcbind nfs-common]
+      server_servicehelpers = ['nfs-common']
+      client_services = ['rpcbind', 'nfs-common']
     when 'trusty'
       server_service = 'nfs-kernel-server'
       server_servicehelpers = ''
-      client_services = %w[rpcbind]
+      client_services = ['rpcbind']
     when 'bionic', 'focal'
       server_service = 'nfs-kernel-server'
-      server_servicehelpers = %w[nfs-idmapd]
-      client_services = %w[rpcbind]
+      server_servicehelpers = ['nfs-idmapd']
+      client_services = ['rpcbind']
     else
       server_service = 'nfs-server'
-      server_servicehelpers = %w[nfs-idmapd]
-      client_services = %w[rpcbind]
+      server_servicehelpers = ['nfs-idmapd']
+      client_services = ['rpcbind']
     end
-    server_packages = %w[nfs-common nfs-kernel-server nfs4-acl-tools rpcbind]
-    client_packages = %w[nfs-common nfs4-acl-tools rpcbind]
+    server_packages = ['nfs-common', 'nfs-kernel-server', 'nfs4-acl-tools', 'rpcbind']
+    client_packages = ['nfs-common', 'nfs4-acl-tools', 'rpcbind']
 
   when 'RedHat'
     case fact('operatingsystemmajrelease')
     when '6'
       server_service = 'nfs'
-      server_servicehelpers = %w[rpcidmapd rpcbind]
-      client_services = %w[rpcbind]
+      server_servicehelpers = ['rpcidmapd', 'rpcbind']
+      client_services = ['rpcbind']
     when '7'
       server_service = 'nfs-server.service'
-      server_servicehelpers = %w[nfs-idmap.service]
-      client_services = %w[rpcbind.service rpcbind.socket]
+      server_servicehelpers = ['nfs-idmap.service']
+      client_services = ['rpcbind.service', 'rpcbind.socket']
     end
-    server_packages = %w[nfs-utils nfs4-acl-tools rpcbind]
-    client_packages = %w[nfs-utils nfs4-acl-tools rpcbind]
+    server_packages = ['nfs-utils', 'nfs4-acl-tools', 'rpcbind']
+    client_packages = ['nfs-utils', 'nfs4-acl-tools', 'rpcbind']
   end
 
   describe 'include nfs without params' do
